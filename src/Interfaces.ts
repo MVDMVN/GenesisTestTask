@@ -1,4 +1,4 @@
-interface IUser<T extends React.ComponentType<any>> {
+interface IUser {
   id: number;
   name?: string;
   username?: string;
@@ -6,8 +6,6 @@ interface IUser<T extends React.ComponentType<any>> {
   phone?: string;
   website?: string;
   [propName: string]: any;
-  component?: T;
-  componentProps?: React.ComponentProps<T>;
 }
 
 export default IUser;

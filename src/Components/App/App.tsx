@@ -1,9 +1,9 @@
 import {useState, useEffect} from 'react';
-import { styled } from '@mui/material/styles';
 import './App.css';
 import axios from "axios";
 import IUser from "../../Interfaces"
 import UsersTable from '../UsersTable/UsersTable';
+import Component from '../Component';
 
 const App = () => { 
   const [data, setData] = useState<IUser[]>([]);
@@ -18,7 +18,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <UsersTable users={data} />
+      <UsersTable users={data} newComponent={<Component/>}/>
     </div>
   );
 }

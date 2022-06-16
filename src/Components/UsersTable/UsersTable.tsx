@@ -19,10 +19,12 @@ const StyledTableCell = styled(TableCell)(() => ({
 
 type Props = {
   users: Array<IUser>
+  newComponent?: React.ReactNode;
 }
 
-const UsersTable: React.FC<Props> = ({users}):JSX.Element => { 
+const UsersTable: React.FC<Props> = ({users, newComponent}) => { 
   return (
+    <div>
     <TableContainer sx={{maxWidth: 1400}} component={Paper}>
       <Table>
         <TableHead>
@@ -49,6 +51,8 @@ const UsersTable: React.FC<Props> = ({users}):JSX.Element => {
         </TableBody>
       </Table>
     </TableContainer>
+    {newComponent}
+    </div>
   );
 }
 
