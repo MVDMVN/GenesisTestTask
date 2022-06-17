@@ -7,7 +7,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import customTheme from "../../theme"
-import TableData from '../../Interfaces';
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -23,12 +22,12 @@ type HeadCell<Type> = {
 };
 
 type TableProps<Type> = {
-  heads: HeadCell<Type>[];
-  rows: Array<Type|TableData>;
+  headers: HeadCell<Type>[];
+  rows: Array<Type>;
 }
 
-export function UsersTable<T>({heads, rows}: TableProps<T>) { 
-  const ColumnsKeys = heads.map((item: HeadCell<T>) => item.id);
+export function UsersTable<T>({headers, rows}: TableProps<T>) { 
+  const ColumnsKeys = headers.map((item: HeadCell<T>) => item.id);
   
   return (
     <div>
@@ -36,8 +35,8 @@ export function UsersTable<T>({heads, rows}: TableProps<T>) {
       <Table>
         <TableHead>
           <TableRow>
-            {heads.map((head, headKey) => {
-              return <StyledTableCell key={headKey}>{head.label}</StyledTableCell>;
+            {headers.map((header, headerKey) => {
+              return <StyledTableCell key={headerKey}>{header.label}</StyledTableCell>;
             })}
           </TableRow>
         </TableHead>
@@ -46,7 +45,7 @@ export function UsersTable<T>({heads, rows}: TableProps<T>) {
             return (
               <TableRow key={rowKey}>
                 {ColumnsKeys.map((column: keyof T, columnKey) => {
-                  return <StyledTableCell key={columnKey}>{row[column]}</StyledTableCell>;
+                  return <StyledTableCell key={columnKey}><>{row[column]}</></StyledTableCell>;
                 })}
               </TableRow>
             );
