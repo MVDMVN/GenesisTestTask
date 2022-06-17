@@ -7,7 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import customTheme from "../../theme"
-import IUser from "../../Interfaces"
+import TableData from '../../Interfaces';
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -17,43 +17,43 @@ const StyledTableCell = styled(TableCell)(() => ({
   }
 }));
 
-type Props = {
-  users: Array<IUser>
-  newComponent?: React.ReactNode;
+type HeadCell<Type> = {
+  id: Extract<keyof Type, string>;
+  label: string;
+};
+
+type TableProps<Type> = {
+  heads: HeadCell<Type>[];
+  rows: Array<Type|TableData>;
 }
 
-const UsersTable: React.FC<Props> = ({users, newComponent}) => { 
+export function UsersTable<T>({heads, rows}: TableProps<T>) { 
+  const ColumnsKeys = heads.map((item: HeadCell<T>) => item.id);
+  
   return (
     <div>
     <TableContainer sx={{maxWidth: 1400}} component={Paper}>
       <Table>
         <TableHead>
           <TableRow>
-            <StyledTableCell>Name</StyledTableCell>
-            <StyledTableCell align="right">Username</StyledTableCell>
-            <StyledTableCell align="right">Email</StyledTableCell>
-            <StyledTableCell align="right">Phone</StyledTableCell>
-            <StyledTableCell align="right">Website</StyledTableCell>
+            {heads.map((head, headKey) => {
+              return <StyledTableCell key={headKey}>{head.label}</StyledTableCell>;
+            })}
           </TableRow>
         </TableHead>
         <TableBody>
-          {users.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.username}</TableCell>
-              <TableCell align="right">{row.email}</TableCell>
-              <TableCell align="right">{row.phone}</TableCell>
-              <TableCell align="right">{row.website}</TableCell>
-            </TableRow>
-          ))}
+          {rows.map((row, rowKey) => {
+            return (
+              <TableRow key={rowKey}>
+                {ColumnsKeys.map((column: keyof T, columnKey) => {
+                  return <StyledTableCell key={columnKey}>{row[column]}</StyledTableCell>;
+                })}
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </TableContainer>
-    {newComponent}
     </div>
   );
 }
-
-export default UsersTable;
